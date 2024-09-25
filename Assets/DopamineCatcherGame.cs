@@ -40,12 +40,12 @@ public class DopamineCatcherGame : MonoBehaviour
     private Sprite[] dopamineFrameSprites;
     private Sprite[] thcFrameSprites;
 
-    [RuntimeInitializeOnLoadMethod]
-    static void OnRuntimeMethodLoad()
-    {
-        GameObject gameManager = new GameObject("GameManager");
-        gameManager.AddComponent<DopamineCatcherGame>();
-    }
+    // [RuntimeInitializeOnLoadMethod]
+    // static void OnRuntimeMethodLoad()
+    // {
+    //     GameObject gameManager = new GameObject("GameManager");
+    //     gameManager.AddComponent<DopamineCatcherGame>();
+    // }
 
     void Awake()
     {
@@ -156,7 +156,7 @@ public class DopamineCatcherGame : MonoBehaviour
         GameObject buttonTextObject = new GameObject("ButtonText");
         buttonTextObject.transform.SetParent(restartButtonObject.transform);
         Text buttonText = buttonTextObject.AddComponent<Text>();
-        buttonText.text = "Restart";
+        buttonText.text = "Quit";
         buttonText.font = font;
         buttonText.fontSize = 22;
         buttonText.alignment = TextAnchor.MiddleCenter;
@@ -170,7 +170,7 @@ public class DopamineCatcherGame : MonoBehaviour
         textRect.anchoredPosition = Vector2.zero;
 
         // Add OnClick listener to restart button
-        restartButton.onClick.AddListener(RestartGame);
+        restartButton.onClick.AddListener(QuitGame);
 
         // Create player
         CreatePlayer();
@@ -327,6 +327,12 @@ public class DopamineCatcherGame : MonoBehaviour
         {
             SpawnDopamine();
         }
+    }
+
+    public void QuitGame()
+    {
+        // Go to MainMenu scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     void CreatePlayer()
