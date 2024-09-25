@@ -45,6 +45,12 @@ public class DopamineCatcherGame : MonoBehaviour
 
     void Start()
     {
+        // Font is at Assets/Resources/SuperPixel.ttf
+        // var fontResourcePath = "SuperPixelaa";
+        var font = Resources.Load<Font>("PixelGameFont");
+        // var ttt = Resources.Load("fdsaglkds");
+
+
         // Initialize spawnInterval
         spawnInterval = initialSpawnInterval;
 
@@ -65,8 +71,8 @@ public class DopamineCatcherGame : MonoBehaviour
         GameObject scoreTextObject = new GameObject("ScoreText");
         scoreTextObject.transform.SetParent(canvasObject.transform);
         scoreText = scoreTextObject.AddComponent<Text>();
-        scoreText.font = Resources.GetBuiltinResource<Font>("Ariel.ttf");
-        scoreText.fontSize = 30;
+        scoreText.font = font;
+        scoreText.fontSize = 22;
         scoreText.alignment = TextAnchor.UpperLeft;
         scoreText.color = Color.black;
         RectTransform rectTransform = scoreText.GetComponent<RectTransform>();
@@ -74,6 +80,9 @@ public class DopamineCatcherGame : MonoBehaviour
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);
         rectTransform.anchoredPosition = new Vector2(10, -10);
+        // Make width 200
+        rectTransform.sizeDelta = new Vector2(200, 30);
+        
 
         UpdateScoreText();
 
@@ -97,7 +106,8 @@ public class DopamineCatcherGame : MonoBehaviour
         buttonTextObject.transform.SetParent(restartButtonObject.transform);
         Text buttonText = buttonTextObject.AddComponent<Text>();
         buttonText.text = "Restart";
-        buttonText.font = Resources.GetBuiltinResource<Font>("Ariel.ttf");
+        buttonText.font = font;
+        buttonText.fontSize = 22;
         buttonText.alignment = TextAnchor.MiddleCenter;
         buttonText.color = Color.black;
 
