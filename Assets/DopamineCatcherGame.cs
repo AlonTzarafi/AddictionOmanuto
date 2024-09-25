@@ -65,7 +65,7 @@ public class DopamineCatcherGame : MonoBehaviour
         GameObject scoreTextObject = new GameObject("ScoreText");
         scoreTextObject.transform.SetParent(canvasObject.transform);
         scoreText = scoreTextObject.AddComponent<Text>();
-        scoreText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        scoreText.font = Resources.GetBuiltinResource<Font>("Ariel.ttf");
         scoreText.fontSize = 30;
         scoreText.alignment = TextAnchor.UpperLeft;
         scoreText.color = Color.black;
@@ -97,7 +97,7 @@ public class DopamineCatcherGame : MonoBehaviour
         buttonTextObject.transform.SetParent(restartButtonObject.transform);
         Text buttonText = buttonTextObject.AddComponent<Text>();
         buttonText.text = "Restart";
-        buttonText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        buttonText.font = Resources.GetBuiltinResource<Font>("Ariel.ttf");
         buttonText.alignment = TextAnchor.MiddleCenter;
         buttonText.color = Color.black;
 
