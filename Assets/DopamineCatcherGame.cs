@@ -11,7 +11,7 @@ public class DopamineCatcherGame : MonoBehaviour
 
     private int score = 0;
 
-    private float initialSpawnInterval = 0.36f;
+    private float initialSpawnInterval = 0.05f;
     private float spawnInterval;
     private float minSpawnInterval = 0.08f;
     private float maxSpawnInterval = 1000000f;
