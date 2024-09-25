@@ -11,7 +11,7 @@ public class DopamineCatcherGame : MonoBehaviour
 
     private int score = 0;
 
-    private float initialSpawnInterval = 0.24f;
+    private float initialSpawnInterval = 0.36f;
     private float spawnInterval;
     private float minSpawnInterval = 0.08f;
     private float maxSpawnInterval = 1000000f;
@@ -22,7 +22,7 @@ public class DopamineCatcherGame : MonoBehaviour
     private float timeSinceLastSpawn = 0f;
     private float timeSinceLastCatch = 0f;
 
-    private int maxDopamineOnScreen = 200;
+    private int maxDopamineOnScreen = 40;
     private int dopamineCount = 0;
 
     private int startingDopamine = 5;
@@ -38,6 +38,7 @@ public class DopamineCatcherGame : MonoBehaviour
     // Sprites for animations
     private Sprite[] brainFrameSprites;
     private Sprite[] dopamineFrameSprites;
+    private Sprite[] thcFrameSprites;
 
     [RuntimeInitializeOnLoadMethod]
     static void OnRuntimeMethodLoad()
@@ -73,6 +74,7 @@ public class DopamineCatcherGame : MonoBehaviour
             {
                 brainFrameSprites = noaAssets.brain;
                 dopamineFrameSprites = noaAssets.dopamin;
+                thcFrameSprites = noaAssets.thc;
             }
             else
             {
@@ -204,13 +206,19 @@ public class DopamineCatcherGame : MonoBehaviour
         GameObject dopamine = new GameObject("Dopamine");
         dopamine.tag = "Dopamine";
         SpriteRenderer dopamineRenderer = dopamine.AddComponent<SpriteRenderer>();
+        dopamineRenderer.sortingLayerName = "Game";
         dopamineRenderer.sortingOrder = 0;
 
         // Set up dopamine animation
         if (dopamineFrameSprites != null && dopamineFrameSprites.Length > 0)
         {
             SpriteAnimator animator = dopamine.AddComponent<SpriteAnimator>();
-            animator.sprites = dopamineFrameSprites;
+            // animator.sprites = dopamineFrameSprites;
+            if (Random.Range(0, 10) == 0) {
+                animator.sprites = thcFrameSprites;
+            } else {
+                animator.sprites = dopamineFrameSprites;
+            }
             animator.frameRate = 10f; // Adjust as needed
         }
         else
@@ -236,6 +244,7 @@ public class DopamineCatcherGame : MonoBehaviour
 
         // Adjust collider radius after scaling
         float colliderRadius = colliderScale / 2f;
+        dopamineCollider.offset = new Vector2(0, 2.5f);
         dopamineCollider.radius = colliderRadius;
 
         // Add Dopamine script
@@ -325,6 +334,7 @@ public class DopamineCatcherGame : MonoBehaviour
         // Create player
         player = new GameObject("Player");
         SpriteRenderer playerRenderer = player.AddComponent<SpriteRenderer>();
+        playerRenderer.sortingLayerName = "Game";
         playerRenderer.sortingOrder = 1; // Ensure player is rendered above other objects
 
         // Set up player animation
@@ -350,6 +360,7 @@ public class DopamineCatcherGame : MonoBehaviour
 
         // Add BoxCollider2D to player
         BoxCollider2D playerCollider = player.AddComponent<BoxCollider2D>();
+        playerCollider.offset = new Vector2(0, 2.5f);
         playerCollider.isTrigger = false;
 
         // Adjust collider size after scaling
