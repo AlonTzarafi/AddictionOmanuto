@@ -44,6 +44,8 @@ public class DopamineCatcherGame : MonoBehaviour
 
     private float thcTimeActive;
 
+    public GameObject THCEffect { get; private set; }
+
     // [RuntimeInitializeOnLoadMethod]
     // static void OnRuntimeMethodLoad()
     // {
@@ -58,6 +60,8 @@ public class DopamineCatcherGame : MonoBehaviour
 
     void Start()
     {
+        THCEffect = GameObject.Find("THCEffect");
+
         // Set screen resolution to Full HD
         Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
 
@@ -189,6 +193,13 @@ public class DopamineCatcherGame : MonoBehaviour
     void Update()
     {
         thcTimeActive -= Time.deltaTime;
+
+        if (thcTimeActive > 0) {
+            THCEffect.SetActive(true);
+        } else {
+            THCEffect.SetActive(false);
+        }
+
         
         if (score == 49) {
             timeWhenWinning += Time.deltaTime;
@@ -243,6 +254,13 @@ public class DopamineCatcherGame : MonoBehaviour
 
         float xPosition = Random.Range(-7f, 7f);
         float yPosition = Random.Range(-7f, 7f);
+        // Make sure not next to any existing dopamine
+        while (Physics2D.OverlapCircle(new Vector2(xPosition, yPosition), 1f) != null)
+        {
+            xPosition = Random.Range(-7f, 7f);
+            yPosition = Random.Range(-7f, 7f);
+        }
+        
         dopamine.transform.position = new Vector3(xPosition, yPosition, 0);
         dopamine.transform.localScale = spriteScale * Vector3.one;
 
