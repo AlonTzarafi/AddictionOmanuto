@@ -13,13 +13,13 @@ public class DopamineCatcherGame : MonoBehaviour
 
     private int score = 0;
 
-    private float initialSpawnInterval = 0.05f;
+    private float initialSpawnInterval = 0.25f;
     private float spawnInterval;
     private float minSpawnInterval = 0.08f;
     private float maxSpawnInterval = 1000000f;
 
-    private float spawnIntervalIncreaseRate = 0.04f; // Rate at which spawnInterval increases when not collecting
-    private float spawnIntervalDecreaseAmount = 0.04f; // Amount to decrease spawnInterval when collecting dopamine
+    private float spawnIntervalIncreaseRate = 0.09f; // Rate at which spawnInterval increases when not collecting
+    private float spawnIntervalDecreaseAmount = 0.14f; // Amount to decrease spawnInterval when collecting dopamine
 
     private float timeSinceLastSpawn = 0f;
     private float timeSinceLastCatch = 0f;
@@ -45,6 +45,7 @@ public class DopamineCatcherGame : MonoBehaviour
     private float thcTimeActive;
 
     public GameObject THCEffect { get; private set; }
+    public GameObject YouDied { get; private set; }
 
     // [RuntimeInitializeOnLoadMethod]
     // static void OnRuntimeMethodLoad()
@@ -61,6 +62,7 @@ public class DopamineCatcherGame : MonoBehaviour
     void Start()
     {
         THCEffect = GameObject.Find("THCEffect");
+        YouDied = GameObject.Find("YouDied");
 
         // Set screen resolution to Full HD
         Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
@@ -198,6 +200,12 @@ public class DopamineCatcherGame : MonoBehaviour
             THCEffect.SetActive(true);
         } else {
             THCEffect.SetActive(false);
+        }
+
+        if (score >= 50) {
+            YouDied.SetActive(true);
+        } else {
+            YouDied.SetActive(false);
         }
 
         
