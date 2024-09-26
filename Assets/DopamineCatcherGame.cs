@@ -9,6 +9,8 @@ public class DopamineCatcherGame : MonoBehaviour
     public const float spriteScale = 0.1f;
     public const float colliderScale = 1f / spriteScale;
 
+    private float timeWhenWinning = 0f;
+
     private int score = 0;
 
     private float initialSpawnInterval = 0.05f;
@@ -39,6 +41,8 @@ public class DopamineCatcherGame : MonoBehaviour
     private Sprite[] brainFrameSprites;
     private Sprite[] dopamineFrameSprites;
     private Sprite[] thcFrameSprites;
+
+    private float thcTimeActive;
 
     // [RuntimeInitializeOnLoadMethod]
     // static void OnRuntimeMethodLoad()
@@ -184,6 +188,15 @@ public class DopamineCatcherGame : MonoBehaviour
 
     void Update()
     {
+        thcTimeActive -= Time.deltaTime;
+        
+        if (score == 49) {
+            timeWhenWinning += Time.deltaTime;
+            if (timeWhenWinning >= 4f) {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Credits");
+            }
+        }
+        
         timeSinceLastCatch += Time.deltaTime;
 
         // Increase spawnInterval over time when not collecting dopamine
@@ -216,6 +229,7 @@ public class DopamineCatcherGame : MonoBehaviour
             // animator.sprites = dopamineFrameSprites;
             if (Random.Range(0, 10) == 0) {
                 animator.sprites = thcFrameSprites;
+                dopamine.AddComponent<THC>();
             } else {
                 animator.sprites = dopamineFrameSprites;
             }
@@ -260,7 +274,11 @@ public class DopamineCatcherGame : MonoBehaviour
 
     public void IncreaseScore()
     {
-        score++;
+        if (thcTimeActive > 0) {
+            score += 10;
+        } else {
+            score++;
+        }
         UpdateScoreText();
         ResetCatchTimer();
 
@@ -375,6 +393,11 @@ public class DopamineCatcherGame : MonoBehaviour
         // Add player movement script
         player.AddComponent<PlayerController>();
     }
+
+    public void THC()
+    {
+        thcTimeActive = 2f;
+    }
 }
 
 public class PlayerController : MonoBehaviour
@@ -418,10 +441,17 @@ public class Dopamine : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerController>())
         {
-            // Increase score
-            DopamineCatcherGame.Instance.IncreaseScore();
-            DopamineCatcherGame.Instance.ResetCatchTimer();
-            DopamineCatcherGame.Instance.CheckGameOver();
+            bool isTHC = GetComponent<THC>();
+            if (isTHC) {
+                // Use THC
+                DopamineCatcherGame.Instance.THC();
+                DopamineCatcherGame.Instance.ResetCatchTimer();
+            } else {
+                // Increase score
+                DopamineCatcherGame.Instance.IncreaseScore();
+                DopamineCatcherGame.Instance.ResetCatchTimer();
+                DopamineCatcherGame.Instance.CheckGameOver();
+            }
             // Destroy the dopamine molecule
             DestroySelf();
         }
@@ -484,3 +514,8 @@ public static class SpriteCreator
         return Sprite.Create(texture, new Rect(0, 0, 64, 64), new Vector2(0.5f, 0.5f));
     }
 }
+
+public class THC : MonoBehaviour
+{
+}
+
